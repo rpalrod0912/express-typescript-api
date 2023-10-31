@@ -17,8 +17,6 @@ const likePost = async (req: any, res: any) => {
   const { user_id, post_id } = req.body;
   const findUser = await userService.getUserById(user_id);
   const findIfUserHasLiked = await likesService.userHasLiked(user_id, post_id);
-  debugger;
-  console.log(findIfUserHasLiked.rows);
   const response =
     findUser.length > 0 && !findIfUserHasLiked.rows[0].exists
       ? await likesService.likePost(user_id, post_id)
@@ -38,8 +36,6 @@ const deleteUserLike = async (req: any, res: any) => {
   const { user_id, post_id } = req.body;
   const findUser = await userService.getUserById(user_id);
   const findIfUserHasLiked = await likesService.userHasLiked(user_id, post_id);
-  debugger;
-  console.log(findIfUserHasLiked.rows);
   const response =
     findUser.length > 0 && findIfUserHasLiked.rows[0].exists
       ? await likesService.deleteUserLike(user_id, post_id)

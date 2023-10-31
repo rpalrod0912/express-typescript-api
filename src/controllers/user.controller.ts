@@ -5,8 +5,6 @@
 import * as userService from "../services/user.service";
 
 const getUsers = async (req: any, res: any) => {
-  debugger;
-
   const response = await userService.getUsers();
   if (response) {
     res.status(200).json(response);
@@ -16,9 +14,6 @@ const getUsers = async (req: any, res: any) => {
 };
 
 const createUser = async (req: any, res: any) => {
-  debugger;
-  console.log("hola");
-
   const { username, email, password } = req.body;
   console.log(username, email, password);
   if (username && email && password) {
@@ -74,7 +69,6 @@ const removeUser = async (req: any, res: any) => {
 };
 
 const updateUser = async (req: any, res: any) => {
-  debugger;
   const id = parseInt(req.params.id);
   const { username, email, password } = req.body;
 

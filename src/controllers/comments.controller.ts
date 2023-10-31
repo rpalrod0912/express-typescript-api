@@ -2,8 +2,6 @@ import * as commentsService from "../services/comments.service";
 import * as userService from "../services/user.service";
 
 const getCommentsFromPost = async (req: any, res: any) => {
-  debugger;
-
   const post_id = parseInt(req.body.post_id);
   const response = await commentsService.getCommentsFromPost(post_id);
   if (response) {
@@ -20,8 +18,6 @@ const addCommentsToPost = async (req: any, res: any) => {
     user_id,
     post_id
   );
-  debugger;
-  console.log(findIfUserHasCommented.rows);
   const response =
     findUser.length > 0 && !findIfUserHasCommented.rows[0].exists && content
       ? await commentsService.addCommentsToPost(user_id, post_id, content)

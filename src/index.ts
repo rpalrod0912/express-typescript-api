@@ -3,6 +3,7 @@ import userRouter from "./routes/userRoutes";
 import postsRouter from "./routes/postsRoutes";
 import likesRouter from "./routes/likesRoutes";
 import commentsRouter from "./routes/commentsRoutes";
+import followersRouter from "./routes/followersRoutes";
 
 const app = express();
 app.use(express.json()); //middleware que transofrma la req.bidy a un json
@@ -13,6 +14,7 @@ app.use("/api/users", userRouter);
 app.use("/api/posts", postsRouter);
 app.use("/api/likes", likesRouter);
 app.use("/api/comments", commentsRouter);
+app.use("/api/followers", followersRouter);
 
 app.get("/ping", (req, res) => {
   console.log("someone pinged here!!!");

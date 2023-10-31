@@ -24,13 +24,11 @@ const getPostByPostId = async (id: number) => {
 };
 
 const addNewPost = async (user_id: string, image: string, content: string) => {
-  debugger;
   const response = await pool.query(createPost, [user_id, image, content]);
   return response;
 };
 
 const deletePost = async (id: number) => {
-  debugger;
   const response = await pool.query(deletePostById, [id]);
   return response;
 };

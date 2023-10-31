@@ -3,8 +3,6 @@ import * as userService from "../services/user.service";
 import * as likesService from "../services/likes.service";
 
 const getPosts = async (req: any, res: any) => {
-  debugger;
-
   const response = await postsService.getPosts();
   if (response) {
     res.status(200).json(response);
@@ -61,7 +59,6 @@ const addNewPost = async (req: any, res: any) => {
 
 const deletePost = async (req: any, res: any) => {
   const id = parseInt(req.params.id);
-  debugger;
   if (id) {
     const findPost = await postsService.getPostByPostId(id);
     console.log(findPost);

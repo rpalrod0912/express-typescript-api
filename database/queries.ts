@@ -39,6 +39,18 @@ const findIfUserHasComment =
 const deleteComment =
   "DELETE FROM comments WHERE user_id = $1 AND post_id = $2";
 
+///5.Followers Queries
+const getFollowers = "SELECT * FROM followers WHERE following_id = $1";
+
+const followUser =
+  "INSERT INTO followers (follower_id, following_id) VALUES ($1, $2);";
+
+const checkIfUserIsFollower =
+  "SELECT EXISTS(SELECT 1 FROM followers WHERE follower_id = $1 AND following_id = $2);";
+
+const unfollowUser =
+  "DELETE FROM followers WHERE follower_id = $1 AND following_id = $2";
+
 export {
   getAllUsers,
   checkEmail,
@@ -52,6 +64,7 @@ export {
   updateUserById,
   getAllPosts,
   deletePostById,
+  checkIfUserIsFollower,
   getPostsById,
   givePostLikes,
   addNewLike,
@@ -60,4 +73,7 @@ export {
   addPostComment,
   findIfUserHasComment,
   deleteComment,
+  getFollowers,
+  followUser,
+  unfollowUser,
 };
