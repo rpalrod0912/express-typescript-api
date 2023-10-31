@@ -1,5 +1,6 @@
 import * as postsService from "../services/posts.service";
 import * as userService from "../services/user.service";
+import * as likesService from "../services/likes.service";
 
 const getPosts = async (req: any, res: any) => {
   debugger;
@@ -25,10 +26,12 @@ const getUserPosts = async (req: any, res: any) => {
 
 const getPostByPostId = async (req: any, res: any) => {
   const postId = parseInt(req.params.id);
-
+  const postLikes = await likesService.getPostLikes(postId);
+  console.log(postLikes);
   const response = await postsService.getPostByPostId(postId);
+
   if (response.length > 0) {
-    res.status(200).json(response);
+    res.status(200).json({ ...response[0], likes: postLikes[0].num_likes });
   } else if (response.length === 0) {
     res.status(400).json("No posts exists with that id");
   } else {
