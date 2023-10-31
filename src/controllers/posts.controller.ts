@@ -31,7 +31,7 @@ const getPostByPostId = async (req: any, res: any) => {
   const response = await postsService.getPostByPostId(postId);
 
   if (response.length > 0) {
-    res.status(200).json({ ...response[0], likes: postLikes[0].num_likes });
+    res.status(200).json({ ...response[0], likes: postLikes.num_likes });
   } else if (response.length === 0) {
     res.status(400).json("No posts exists with that id");
   } else {

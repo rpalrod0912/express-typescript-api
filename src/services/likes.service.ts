@@ -8,7 +8,7 @@ import {
 
 const getPostLikes = async (post_id: number) => {
   const response = await pool.query(givePostLikes, [post_id]);
-  return response.rows;
+  return response.rows[0];
 };
 
 const likePost = async (user_id: number, post_id: number) => {

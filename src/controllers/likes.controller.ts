@@ -2,7 +2,7 @@ import * as likesService from "../services/likes.service";
 import * as userService from "../services/user.service";
 
 const getPostLikes = async (req: any, res: any) => {
-  debugger;
+  //TODO: Verify post exists
 
   const post_id = parseInt(req.body.post_id);
   const response = await likesService.getPostLikes(post_id);
