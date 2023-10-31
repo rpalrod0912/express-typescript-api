@@ -8,4 +8,10 @@ router
   .get(usersController.getUsers)
   .post(usersController.createUser);
 
+router
+  .route("/:id")
+  .get(usersController.getUserById)
+  .put(usersController.updateUser)
+  .delete(usersController.removeUser);
+
 export default router;

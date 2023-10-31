@@ -49,4 +49,43 @@ const createUser = async (req: any, res: any) => {
   }
 };
 
-export { createUser, getUsers };
+const getUserById = async (req: any, res: any) => {
+  const id = parseInt(req.params.id);
+  const response = await userService.getUserById(id);
+  if (response.length > 0) {
+    console.log(response);
+    res.status(200).json(response);
+  } else if (response.length === 0) {
+    res.status(201).json(`No User found with id ${id}`);
+  } else {
+    res.status(400).send("Something went wrong");
+  }
+};
+
+const removeUser = async (req: any, res: any) => {
+  const id = parseInt(req.params.id);
+  const userRemoved = await userService.removeUser(id);
+  if (userRemoved === 1) {
+    await userService.removeUser;
+    res.status(200).json(`User with ${id} deleted successfully`);
+  } else {
+    res.status(400).json(`No User found with id ${id}`);
+  }
+};
+
+const updateUser = async (req: any, res: any) => {
+  debugger;
+  const id = parseInt(req.params.id);
+  const { username, email, password } = req.body;
+
+  const response = await userService.updateUser(username, email, password, id);
+  if (response > 0) {
+    const newUserData = await userService.getUserById(id);
+    console.log(newUserData);
+    res.status(200).json(newUserData[0]);
+  } else {
+    res.status(400).send("Something went wrong");
+  }
+};
+
+export { createUser, getUsers, getUserById, removeUser, updateUser };
