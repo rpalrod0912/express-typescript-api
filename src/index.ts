@@ -5,7 +5,12 @@ import likesRouter from "./routes/likesRoutes";
 import commentsRouter from "./routes/commentsRoutes";
 import followersRouter from "./routes/followersRoutes";
 
+const cors = require("cors");
+
 const app = express();
+
+app.use(cors()); //middleware que permite la conexión y el uso de endpoint desde cualquier cliente
+
 app.use(express.json()); //middleware que transofrma la req.bidy a un json
 
 const PORT = 3000;
