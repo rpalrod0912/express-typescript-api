@@ -15,7 +15,22 @@ dotenv.config();
 
 export const serverKey = process.env.TOKEN_KEY;
 
-app.use(cors()); //middleware que permite la conexión y el uso de endpoint desde cualquier cliente
+const corOptions = {
+  origin: "*",
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corOptions)); //middleware que permite la conexión y el uso de endpoint desde cualquier cliente
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 app.use(express.json()); //middleware que transofrma la req.bidy a un json
 

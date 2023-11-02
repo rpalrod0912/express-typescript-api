@@ -7,6 +7,8 @@ import * as userService from "../services/user.service";
 
 const jwt = require("jsonwebtoken");
 
+//TODO: Get methods that use body params have to be changed to query params in url!!
+
 const getUsers = async (req: any, res: any) => {
   const response = await userService.getUsers();
   if (response) {
@@ -110,11 +112,14 @@ const updateUser = async (req: any, res: any) => {
   }
 };
 
+//req.query Receives this data as queryparams in url Example: http://localhost:3000/api/users/login?username=farra2&password=farra123
+
 const loginUser = async (req: any, res: any) => {
-  const { username, password } = req.body;
+  const { username, password } = req.query;
+  console.log(req);
+  console.log(username, password);
 
   const userExists = await userService.getUserByUsername(username);
-  console.log(userExists);
   const passwordVerification =
     userExists.length > 0
       ? await userService.validateUser(password, userExists[0].password)
