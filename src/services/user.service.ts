@@ -6,9 +6,12 @@ import {
   getUserWithId,
   deleteUserById,
   updateUserById,
+  getUserWithUserName,
   insertUsers,
 } from "../../database/queries";
 import { User } from "../interfaces/user.interface";
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const getUsers = async (): Promise<User> => {
   const response = await pool.query(getAllUsers);
@@ -18,6 +21,11 @@ const getUsers = async (): Promise<User> => {
 
 const getUserById = async (id: number) => {
   const response = await pool.query(getUserWithId, [id]);
+  return response.rows;
+};
+
+const getUserByUsername = async (username: string) => {
+  const response = await pool.query(getUserWithUserName, [username]);
   return response.rows;
 };
 
@@ -36,7 +44,18 @@ const createUser = async (
   email: string,
   password: string
 ) => {
-  const response = await pool.query(insertUsers, [username, email, password]);
+  const hashPassword = await bcrypt
+    .hash(password, saltRounds)
+    .then((hash: any) => {
+      return hash;
+    })
+    .catch((err: any) => console.error(err.message));
+
+  const response = await pool.query(insertUsers, [
+    username,
+    email,
+    hashPassword,
+  ]);
   return response;
 };
 
@@ -76,6 +95,15 @@ const updateUser = async (
   return 0;
 };
 
+export async function validateUser(password: any, hash: any) {
+  return await bcrypt
+    .compare(password, hash)
+    .then((res: boolean) => {
+      return res;
+    })
+    .catch((err: any) => console.error(err.message));
+}
+
 export {
   getUsers,
   checkUserNameExists,
@@ -84,4 +112,5 @@ export {
   getUserById,
   removeUser,
   updateUser,
+  getUserByUsername,
 };

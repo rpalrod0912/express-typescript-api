@@ -5,6 +5,7 @@ const getUserWithId = "SELECT * FROM users WHERE id = $1";
 const insertUsers =
   "INSERT INTO users (username,email,password) VALUES ($1, $2, $3)";
 const checkUsername = "SELECT username FROM users WHERE username = $1";
+const getUserWithUserName = "SELECT * FROM users WHERE username = $1";
 const deleteUserById = "DELETE FROM users WHERE id = $1";
 const updateUserById =
   "UPDATE users SET username = $1, email = $2, password = $3 WHERE id = $4";
@@ -71,6 +72,7 @@ export {
   findIfUserHasLiked,
   deleteLike,
   addPostComment,
+  getUserWithUserName,
   findIfUserHasComment,
   deleteComment,
   getFollowers,

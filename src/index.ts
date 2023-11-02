@@ -5,9 +5,15 @@ import likesRouter from "./routes/likesRoutes";
 import commentsRouter from "./routes/commentsRoutes";
 import followersRouter from "./routes/followersRoutes";
 
+const dotenv = require("dotenv");
+
 const cors = require("cors");
 
 const app = express();
+
+dotenv.config();
+
+export const serverKey = process.env.TOKEN_KEY;
 
 app.use(cors()); //middleware que permite la conexión y el uso de endpoint desde cualquier cliente
 

@@ -2,7 +2,10 @@
 // import { pool } from "../../database/db-connection";
 // import { checkEmail, insertUsers } from "../../database/queries";
 // If you want to import a service with dunction import * as 'giveName'
+import { serverKey } from "..";
 import * as userService from "../services/user.service";
+
+const jwt = require("jsonwebtoken");
 
 const getUsers = async (req: any, res: any) => {
   const response = await userService.getUsers();
@@ -25,10 +28,14 @@ const createUser = async (req: any, res: any) => {
 
     if (emailCoincidences.length === 0 && usernameCoincidences.length === 0) {
       await userService.createUser(username, email, password);
+      const token = jwt.sign({ username }, serverKey, {
+        expiresIn: "1h",
+      });
       res.status(200).json({
         username,
         email,
         password,
+        token,
       });
       return;
     } else if (emailCoincidences.length > 0) {
@@ -52,6 +59,27 @@ const getUserById = async (req: any, res: any) => {
     res.status(200).json(response);
   } else if (response.length === 0) {
     res.status(201).json(`No User found with id ${id}`);
+  } else {
+    res.status(400).send("Something went wrong");
+  }
+};
+
+const getUserByUserName = async (req: any, res: any) => {
+  const { username } = req.body;
+  const userExists = await userService.checkUserNameExists(username);
+  if (userExists && username) {
+    const response = await userService.getUserByUsername(username);
+    if (response.length > 0) {
+      res.status(200).json(response[0]);
+    } else if (response.length === 0) {
+      res.status(201).json(`No User found with username ${username}`);
+    } else {
+      res.status(400).send("Something went wrong");
+    }
+  } else if (userExists.length === 0 || !userExists) {
+    res.status(400).send("User doesn't exists");
+  } else if (!username) {
+    res.status(400).send("You don't provided a username");
   } else {
     res.status(400).send("Something went wrong");
   }
@@ -82,4 +110,38 @@ const updateUser = async (req: any, res: any) => {
   }
 };
 
-export { createUser, getUsers, getUserById, removeUser, updateUser };
+const loginUser = async (req: any, res: any) => {
+  const { username, password } = req.body;
+
+  const userExists = await userService.getUserByUsername(username);
+  console.log(userExists);
+  const passwordVerification =
+    userExists.length > 0
+      ? await userService.validateUser(password, userExists[0].password)
+      : null;
+
+  console.log(`User auth: ${passwordVerification}`);
+
+  if (passwordVerification) {
+    const token = jwt.sign({ userId: userExists[0].id }, serverKey, {
+      expiresIn: "1h",
+    });
+
+    res.status(200).json({
+      ...userExists[0],
+      token,
+    });
+  } else {
+    res.status(400).send("LogIn Failed");
+  }
+};
+
+export {
+  createUser,
+  getUserByUserName,
+  getUsers,
+  getUserById,
+  removeUser,
+  loginUser,
+  updateUser,
+};
