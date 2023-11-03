@@ -18,6 +18,7 @@ const getUsers = async (req: any, res: any) => {
   }
 };
 
+//Only Post Operations can use req.body
 const createUser = async (req: any, res: any) => {
   const { username, email, password } = req.body;
   console.log(username, email, password);
@@ -30,13 +31,13 @@ const createUser = async (req: any, res: any) => {
 
     if (emailCoincidences.length === 0 && usernameCoincidences.length === 0) {
       await userService.createUser(username, email, password);
-      const token = jwt.sign({ username }, serverKey, {
+      const getUserData = await userService.getUserByUsername(username);
+      const newUser = getUserData[0];
+      const token = jwt.sign({ ...newUser }, serverKey, {
         expiresIn: "1h",
       });
       res.status(200).json({
-        username,
-        email,
-        password,
+        ...newUser,
         token,
       });
       return;
@@ -128,7 +129,8 @@ const loginUser = async (req: any, res: any) => {
   console.log(`User auth: ${passwordVerification}`);
 
   if (passwordVerification) {
-    const token = jwt.sign({ userId: userExists[0].id }, serverKey, {
+    const newUser = userExists[0];
+    const token = jwt.sign({ ...newUser }, serverKey, {
       expiresIn: "1h",
     });
 
