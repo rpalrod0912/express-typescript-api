@@ -52,6 +52,10 @@ const checkIfUserIsFollower =
 const unfollowUser =
   "DELETE FROM followers WHERE follower_id = $1 AND following_id = $2";
 
+//6.Images Queries
+
+const updateUserProfileImage = "UPDATE users SET image = $1 WHERE id = $2";
+
 export {
   getAllUsers,
   checkEmail,
@@ -78,4 +82,5 @@ export {
   getFollowers,
   followUser,
   unfollowUser,
+  updateUserProfileImage,
 };
