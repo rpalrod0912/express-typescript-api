@@ -24,10 +24,19 @@ const upload = multer({ storage: fileStorageEngine });
 // /users/:id
 async function uploadUserImage(req: any, res: any) {
   const userId = req.body.userId;
+  const getUser = await userService.getUserById(userId);
+  const fileName = getUser[0].image;
+  const filePath = fileName
+    ? path.join(__dirname, "../../uploads", fileName)
+    : null;
+  console.log(getUser);
   console.log(req.file);
   if (!req.file) {
     return res.status(400).json({ message: "No file uploaded" });
   } else {
+    if (filePath !== null) {
+      await deleteImageFromStorage(filePath);
+    }
     const response = await pool.query(updateUserProfileImage, [
       req.file.filename,
       userId,
@@ -65,6 +74,17 @@ async function getImage(req: any, res: any) {
   }
 }
 
+//Delete Image
+async function deleteImageFromStorage(filePath: string) {
+  try {
+    fs.unlinkSync(filePath);
+  } catch (err) {
+    // Handle any errors that occur during file deletion
+    console.error("Error deleting the existing image:", err);
+    return false;
+  }
+  return true;
+}
 //I want to load multiple images change upload.single to upload.array
 //Si quieres cambiar el paramtro files a otro nombre ten cuidado y cambialo tambien en la peticion del form data que le enviaras en este caso fields sera el campo que contiene la iamgen
 
