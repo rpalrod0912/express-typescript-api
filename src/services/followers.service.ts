@@ -4,10 +4,16 @@ import {
   getFollowers,
   checkIfUserIsFollower,
   unfollowUser,
+  getFolloweds,
 } from "../../database/queries";
 
-const getCommentsFromPost = async (following_id: number) => {
+const getUserFollowers = async (following_id: number) => {
   const response = await pool.query(getFollowers, [following_id]);
+  return response.rows;
+};
+
+const getUserFolloweds = async (followed_id: number) => {
+  const response = await pool.query(getFolloweds, [followed_id]);
   return response.rows;
 };
 
@@ -33,7 +39,8 @@ const deleteFollow = async (follower_id: number, following_id: number) => {
 };
 
 export {
-  getCommentsFromPost,
+  getUserFollowers,
+  getUserFolloweds,
   checkIfUserIsFollowing,
   postFollow,
   deleteFollow,

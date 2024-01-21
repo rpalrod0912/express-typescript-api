@@ -1,11 +1,17 @@
 import * as followersService from "../services/followers.service";
 import * as userService from "../services/user.service";
 
+// Example Call Endpoint :
+//localhost:3000/api/followers?user=3
+
 const getFollowers = async (req: any, res: any) => {
-  const { user } = req.body;
-  const response = await followersService.getCommentsFromPost(parseInt(user));
-  if (response) {
-    res.status(200).json({ followers: response.length });
+  const { user } = req.query;
+  const followers = await followersService.getUserFollowers(parseInt(user));
+  const followeds = await followersService.getUserFolloweds(parseInt(user));
+  if (followers && followeds) {
+    res
+      .status(200)
+      .json({ followers: followers.length, followeds: followeds.length });
   } else {
     res.status(400).send("Something went wrong");
   }
@@ -30,8 +36,16 @@ const checkIfUserIsFollowing = async (req: any, res: any) => {
   }
 };
 
+//Post Method to follow User
+/*{
+  "following_id":3, -->User to ad follow
+  "follower_id":1 -->User to ad followed
+  
+}
+*/
 const postFollow = async (req: any, res: any) => {
   const { follower_id, following_id } = req.body;
+
   const findFollower = await userService.getUserById(follower_id);
   const findFollowing = await userService.getUserById(following_id);
   const findIfAlreadyFollowing = await followersService.checkIfUserIsFollowing(
