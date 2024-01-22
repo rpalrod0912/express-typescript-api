@@ -34,9 +34,11 @@ const createUploadsFolder = () => {
   }
 };
 
+//Call Upload Folder if it not exists in the server
 createUploadsFolder();
 
-app.use(cors(corOptions)); //middleware que permite la conexión y el uso de endpoint desde cualquier cliente
+//Disable Corss Options, enable conexion to api in every client
+app.use(cors(corOptions));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -47,7 +49,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.json()); //middleware que transofrma la req.bidy a un json
+app.use(express.json()); //middleware que transofrma la req.body a un json
 
 const PORT = 3000;
 

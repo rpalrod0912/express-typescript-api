@@ -6,21 +6,37 @@ import {
   deletePostById,
   getPostsById,
 } from "../../database/queries";
+import { Posts } from "../interfaces/posts.interface";
 import { User } from "../interfaces/user.interface";
+import { getPostImage } from "./images.service";
 
 const getPosts = async (): Promise<User> => {
   const response = await pool.query(getAllPosts);
+  if (response.rows) {
+    response.rows.forEach(async (post: Posts, index: number) => {
+      response.rows[index].image = (await getPostImage(post)) ?? "";
+    });
+  }
   return response.rows;
 };
 
-const getUserPosts = async (user_id: number) => {
+const getUserPosts = async (user_id: number): Promise<Posts[]> => {
   const response = await pool.query(getPostsByUserId, [user_id]);
+  if (response.rows) {
+    response.rows.forEach(async (post: Posts, index: number) => {
+      response.rows[index].image = (await getPostImage(post)) ?? "";
+    });
+  }
   return response.rows;
 };
 
-const getPostByPostId = async (id: number) => {
+const getPostByPostId = async (id: number): Promise<Posts> => {
   const response = await pool.query(getPostsById, [id]);
-  return response.rows;
+  if (response.rows[0]) {
+    response.rows[0].image = (await getPostImage(response.rows[0])) ?? "";
+  }
+
+  return response.rows[0];
 };
 
 const addNewPost = async (user_id: string, image: string, content: string) => {
