@@ -1,8 +1,6 @@
 import express from "express";
-import {
-  getUserProfileImage,
-  uploadUserImage,
-} from "../services/images.service";
+import { uploadUserImage } from "../services/images.service";
+import { getUserProfileImage } from "../controllers/images.controller";
 
 const multer = require("multer");
 
