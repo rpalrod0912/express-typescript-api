@@ -5,9 +5,19 @@ import {
   findIfUserHasComment,
   getPostComments,
 } from "../../database/queries";
+import { CommentInterface } from "../interfaces/comment.interface";
+import { User } from "../interfaces/user.interface";
+import { getUserProfileImage } from "./images.service";
+import { getUserById } from "./user.service";
 
 const getCommentsFromPost = async (post_id: number) => {
   const response = await pool.query(getPostComments, [post_id]);
+  for (let index = 0; index < response.rows.length; index++) {
+    const comment: CommentInterface = response.rows[index];
+    const getUserData: User = (await getUserById(comment.user_id))[0];
+    response.rows[index].user_image = await getUserProfileImage(getUserData);
+  }
+  console.log(response.rows);
   return response.rows;
 };
 

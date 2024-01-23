@@ -1,6 +1,17 @@
 import * as commentsService from "../services/comments.service";
 import * as userService from "../services/user.service";
 
+//In Json Request Body
+/*
+  {
+        "id": 1,
+        "user_id": 1,
+        "post_id": 1,
+        "content": "This is a comment on the first post!",
+        "created_at": "2024-01-19T14:01:38.511Z",
+        "updated_at": "2024-01-19T14:01:38.511Z"
+    }
+ */
 const getCommentsFromPost = async (req: any, res: any) => {
   const post_id = parseInt(req.body.post_id);
   const response = await commentsService.getCommentsFromPost(post_id);

@@ -19,7 +19,7 @@ const getUsers = async (): Promise<User> => {
   return response.rows;
 };
 
-const getUserById = async (id: number) => {
+const getUserById = async (id: number): Promise<User[]> => {
   const response = await pool.query(getUserWithId, [id]);
   return response.rows;
 };
