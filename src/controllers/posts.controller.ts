@@ -15,7 +15,8 @@ const getPosts = async (req: any, res: any) => {
 
 const getUserPosts = async (req: any, res: any) => {
   const user_id = parseInt(req.params.id);
-  const response = await postsService.getUserPosts(user_id);
+  const userData = (await userService.getUserById(user_id))[0];
+  const response = await postsService.getUserPosts(userData);
   if (response) {
     res.status(200).json(response);
   } else {
