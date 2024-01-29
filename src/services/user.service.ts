@@ -8,6 +8,7 @@ import {
   updateUserById,
   getUserWithUserName,
   insertUsers,
+  getUsernameByIdQuery,
 } from "../../database/queries";
 import { User } from "../interfaces/user.interface";
 const bcrypt = require("bcrypt");
@@ -21,6 +22,12 @@ const getUsers = async (): Promise<User> => {
 
 const getUserById = async (id: number): Promise<User[]> => {
   const response = await pool.query(getUserWithId, [id]);
+  return response.rows;
+};
+
+const getUsernameById = async (id: number): Promise<User[]> => {
+  const response = await pool.query(getUsernameByIdQuery, [id]);
+  console.log(response);
   return response.rows;
 };
 
@@ -111,6 +118,7 @@ export {
   checkEmailExists,
   getUserById,
   removeUser,
+  getUsernameById,
   updateUser,
   getUserByUsername,
 };

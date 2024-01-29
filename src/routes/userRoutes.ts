@@ -13,6 +13,10 @@ router.route("/username").get(requireAuth, usersController.getUserByUserName);
 router.route("/login").get(usersController.loginUser);
 
 router
+  .route("/limitedData")
+  .get(requireAuth, usersController.getUsernameAndImageById);
+
+router
   .route("/:id")
   .get(requireAuth, usersController.getUserById)
   .put(requireAuth, usersController.updateUser)

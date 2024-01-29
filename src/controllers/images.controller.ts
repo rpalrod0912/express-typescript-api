@@ -6,7 +6,7 @@ const getUserProfileImage = async (req: any, res: any) => {
   const userData: User =
     (await userService.getUserById(req.params.userId))[0] ?? null;
   const response = userData
-    ? await imagesService.getUserProfileImage(userData)
+    ? await imagesService.getUserProfileImage(userData.image.toString())
     : null;
   if (userData) {
     return response

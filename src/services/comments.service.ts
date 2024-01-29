@@ -15,7 +15,9 @@ const getCommentsFromPost = async (post_id: number) => {
   for (let index = 0; index < response.rows.length; index++) {
     const comment: CommentInterface = response.rows[index];
     const getUserData: User = (await getUserById(comment.user_id))[0];
-    response.rows[index].user_image = await getUserProfileImage(getUserData);
+    response.rows[index].user_image = await getUserProfileImage(
+      getUserData.image.toString()
+    );
     response.rows[index].user_name = getUserData.username;
   }
   return response.rows;

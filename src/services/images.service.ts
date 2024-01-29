@@ -1,7 +1,6 @@
 import { pool } from "../../database/db-connection";
 import { updateUserProfileImage } from "../../database/queries";
 import { Posts } from "../interfaces/posts.interface";
-import { User } from "../interfaces/user.interface";
 import * as userService from "../services/user.service";
 
 const fs = require("fs");
@@ -61,10 +60,11 @@ const uploadUserImage = async (req: any, res: any) => {
   }
 };
 
-const getUserProfileImage = async (user: User) => {
+const getUserProfileImage = async (userImage: string) => {
+  console.log(userImage);
   // const fileName = req.params.fileName;
-  const filePath = user.image
-    ? path.join(__dirname, "../../uploads", user.image)
+  const filePath = userImage
+    ? path.join(__dirname, "../../uploads", userImage)
     : null;
   // Check if the file exists
   if (fs.existsSync(filePath)) {

@@ -6,6 +6,7 @@ import { serverKey } from "..";
 import { User } from "../interfaces/user.interface";
 import { getUserProfileImage } from "../services/images.service";
 import * as userService from "../services/user.service";
+import { getUsernameById } from "../services/user.service";
 
 const jwt = require("jsonwebtoken");
 
@@ -59,11 +60,29 @@ const createUser = async (req: any, res: any) => {
 const getUserById = async (req: any, res: any) => {
   const id = parseInt(req.params.id);
   const response: User[] = await userService.getUserById(id);
-  const userImage = await getUserProfileImage(response[0]);
+  const userImage = await getUserProfileImage(response[0].image.toString());
   // const getUserProfileImage=await getUserProfileImage(response.userId)
   if (response.length > 0 && userImage) {
     response[0].image = userImage;
     res.status(200).json(response);
+  } else if (response.length > 0) {
+    res.status(200).json(response);
+  } else if (response.length === 0) {
+    res.status(201).json(`No User found with id ${id}`);
+  } else {
+    res.status(400).send("Something went wrong");
+  }
+};
+
+const getUsernameAndImageById = async (req: any, res: any) => {
+  const id = parseInt(req.query.id);
+  console.log(id);
+  const response: User[] = await userService.getUserById(id);
+  const userImage = await getUserProfileImage(response[0].image.toString());
+  const userName = await getUsernameById(id);
+  // const getUserProfileImage=await getUserProfileImage(response.userId)
+  if (response.length > 0 && userImage && userName) {
+    res.status(200).json({ ...userName, image: userImage });
   } else if (response.length > 0) {
     res.status(200).json(response);
   } else if (response.length === 0) {
@@ -78,7 +97,7 @@ const getUserByUserName = async (req: any, res: any) => {
   const userExists = await userService.checkUserNameExists(username);
   if (userExists && username) {
     const response = await userService.getUserByUsername(username);
-    const userImage = await getUserProfileImage(response[0]);
+    const userImage = await getUserProfileImage(response[0].image);
 
     if (response.length > 0 && userImage) {
       response[0].image = userImage;
@@ -161,5 +180,6 @@ export {
   getUserById,
   removeUser,
   loginUser,
+  getUsernameAndImageById,
   updateUser,
 };

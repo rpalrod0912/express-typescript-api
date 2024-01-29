@@ -10,6 +10,8 @@ const deleteUserById = "DELETE FROM users WHERE id = $1";
 const updateUserById =
   "UPDATE users SET username = $1, email = $2, password = $3 WHERE id = $4";
 
+const getUsernameByIdQuery = "SELECT username FROM users WHERE id= $1";
+
 //2.Posts Queries
 const getAllPosts = "SELECT * FROM posts";
 const getPostsByUserId = "SELECT * FROM posts WHERE user_id = $1";
@@ -77,6 +79,7 @@ export {
   addNewLike,
   findIfUserHasLiked,
   deleteLike,
+  getUsernameByIdQuery,
   addPostComment,
   getUserWithUserName,
   findIfUserHasComment,

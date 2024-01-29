@@ -11,6 +11,14 @@ router
   .delete(requireAuth, followersController.deleteFollow);
 
 router
+  .route("/followerDetail")
+  .get(requireAuth, followersController.getFollowersDetailed);
+
+router
+  .route("/followedDetail")
+  .get(requireAuth, followersController.getFollowedsDetailed);
+
+router
   .route("/followed")
   .get(requireAuth, followersController.checkIfUserIsFollowing);
 

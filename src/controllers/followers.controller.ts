@@ -17,6 +17,31 @@ const getFollowers = async (req: any, res: any) => {
   }
 };
 
+const getFollowersDetailed = async (req: any, res: any) => {
+  const { userId } = req.query;
+  console.log(userId);
+  const followers = await followersService.getUserFollowersDetailed(
+    parseInt(userId)
+  );
+  if (followers) {
+    res.status(200).json(followers);
+  } else {
+    res.status(400).send("Something went wrong");
+  }
+};
+
+const getFollowedsDetailed = async (req: any, res: any) => {
+  const { userId } = req.query;
+  const followeds = await followersService.getUserFollowedsDetailed(
+    parseInt(userId)
+  );
+  if (followeds) {
+    res.status(200).json(followeds);
+  } else {
+    res.status(400).send("Something went wrong");
+  }
+};
+
 const checkIfUserIsFollowing = async (req: any, res: any) => {
   const { follower_id, following_id } = req.body;
   const response = await followersService.checkIfUserIsFollowing(
@@ -96,4 +121,11 @@ const deleteFollow = async (req: any, res: any) => {
   }
 };
 
-export { getFollowers, checkIfUserIsFollowing, postFollow, deleteFollow };
+export {
+  getFollowers,
+  checkIfUserIsFollowing,
+  postFollow,
+  deleteFollow,
+  getFollowersDetailed,
+  getFollowedsDetailed,
+};
