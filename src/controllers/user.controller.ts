@@ -60,7 +60,9 @@ const createUser = async (req: any, res: any) => {
 const getUserById = async (req: any, res: any) => {
   const id = parseInt(req.params.id);
   const response: User[] = await userService.getUserById(id);
-  const userImage = await getUserProfileImage(response[0].image.toString());
+  const userImage = response[0].image
+    ? await getUserProfileImage(response[0].image.toString())
+    : null;
   // const getUserProfileImage=await getUserProfileImage(response.userId)
   if (response.length > 0 && userImage) {
     response[0].image = userImage;
