@@ -9,6 +9,7 @@ import {
   getUserWithUserName,
   insertUsers,
   getUsernameByIdQuery,
+  updateUserProfileImage,
 } from "../../database/queries";
 import { User } from "../interfaces/user.interface";
 const bcrypt = require("bcrypt");
@@ -102,6 +103,11 @@ const updateUser = async (
   return 0;
 };
 
+const updateUserImage = async (userId: string, file: string) => {
+  const response = await pool.query(updateUserProfileImage, [file, userId]);
+  return response;
+};
+
 export async function validateUser(password: any, hash: any) {
   return await bcrypt
     .compare(password, hash)
@@ -121,4 +127,5 @@ export {
   getUsernameById,
   updateUser,
   getUserByUsername,
+  updateUserImage,
 };

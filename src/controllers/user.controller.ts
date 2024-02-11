@@ -9,6 +9,7 @@ import * as userService from "../services/user.service";
 import { getUsernameById } from "../services/user.service";
 
 const jwt = require("jsonwebtoken");
+const path = require("path");
 
 //TODO: Get methods that use body params have to be changed to query params in url!!
 
@@ -145,6 +146,27 @@ const updateUser = async (req: any, res: any) => {
   }
 };
 
+const updateProfileImage = async (req: any, res: any) => {
+  const id = parseInt(req.params.id);
+
+  const filePath = path.join(__dirname, "../../uploads");
+
+  if (id && filePath && req.file) {
+    const findUser = await userService.getUserById(id);
+    const response =
+      findUser.length > 0
+        ? await userService.updateUserImage(id.toString(), req.file.filename)
+        : null;
+    if (response) {
+      res.status(200).send("Profile Image Updated Successfully");
+    } else {
+      res.status(400).send("Cannot Update User Image");
+    }
+  } else {
+    res.status(400).send("You Need To Provide a File and a Id");
+  }
+};
+
 //req.query Receives this data as queryparams in url Example: http://localhost:3000/api/users/login?username=farra2&password=farra123
 
 const loginUser = async (req: any, res: any) => {
@@ -178,6 +200,7 @@ const loginUser = async (req: any, res: any) => {
 export {
   createUser,
   getUserByUserName,
+  updateProfileImage,
   getUsers,
   getUserById,
   removeUser,
