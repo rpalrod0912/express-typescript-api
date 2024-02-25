@@ -2,6 +2,7 @@ import { pool } from "../../database/db-connection";
 import {
   getAllPosts,
   getPostsByUserId,
+  getAllPostsPaginated,
   createPost,
   deletePostById,
   getPostsById,
@@ -15,6 +16,25 @@ import { getUserById } from "./user.service";
 const getPosts = async (): Promise<User> => {
   const response = await pool.query(getAllPosts);
   const allPosts = response.rows;
+  if (allPosts) {
+    for (let index = 0; index < allPosts.length; index++) {
+      const post: Posts = allPosts[index];
+      allPosts[index].image = (await getPostImage(post)) ?? "";
+      allPosts[index].user_name = (await getUserById(post.user_id))[0] ?? "";
+      allPosts[index].comments = (await getCommentsFromPost(post.id)) ?? "";
+    }
+  }
+  return allPosts;
+};
+
+const getPostsPaginated = async (
+  limit: number,
+  offset: number
+): Promise<User> => {
+  const response = await pool.query(getAllPostsPaginated, [offset, limit]);
+  const allPosts = response.rows;
+  console.log(allPosts.length);
+
   if (allPosts) {
     for (let index = 0; index < allPosts.length; index++) {
       const post: Posts = allPosts[index];
@@ -63,4 +83,11 @@ const deletePost = async (id: number) => {
   return response;
 };
 
-export { getPosts, getUserPosts, addNewPost, getPostByPostId, deletePost };
+export {
+  getPosts,
+  getUserPosts,
+  getPostsPaginated,
+  addNewPost,
+  getPostByPostId,
+  deletePost,
+};

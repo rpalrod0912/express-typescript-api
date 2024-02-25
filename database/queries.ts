@@ -14,6 +14,9 @@ const getUsernameByIdQuery = "SELECT username FROM users WHERE id= $1";
 
 //2.Posts Queries
 const getAllPosts = "SELECT * FROM posts";
+//Get All with pagination and limit
+const getAllPostsPaginated =
+  "SELECT * FROM posts ORDER BY id OFFSET $1 LIMIT $2";
 const getPostsByUserId = "SELECT * FROM posts WHERE user_id = $1";
 const getPostsById = "SELECT * FROM posts WHERE id = $1";
 const createPost =
@@ -79,6 +82,7 @@ export {
   addNewLike,
   findIfUserHasLiked,
   deleteLike,
+  getAllPostsPaginated,
   getUsernameByIdQuery,
   addPostComment,
   getUserWithUserName,

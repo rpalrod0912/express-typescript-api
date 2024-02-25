@@ -24,6 +24,8 @@ router
   .post([requireAuth, upload.single("files")], postsController.addNewPost);
 //   .delete(postsController.deletePost);
 
+router.route("/paginated").get(postsController.getPostsPaginated);
+
 router.route("/user/:id").get(postsController.getUserPosts);
 
 router

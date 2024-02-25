@@ -13,6 +13,23 @@ const getPosts = async (req: any, res: any) => {
   }
 };
 
+const getPostsPaginated = async (req: any, res: any) => {
+  if (req.query.page && req.query.limit) {
+    const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+    const limit = parseInt(req.query.limit) || 10; // Default to limit of 10 if not provided
+    const offset = (page - 1) * limit;
+    const response = await postsService.getPostsPaginated(limit, offset);
+
+    if (response) {
+      res.status(200).json(response);
+    } else {
+      res.status(400).send("Something went wrong");
+    }
+  } else {
+    res.status(400).send("Please send correct limit and page params");
+  }
+};
+
 const getUserPosts = async (req: any, res: any) => {
   const user_id = parseInt(req.params.id);
   const userData = (await userService.getUserById(user_id))[0];
@@ -79,4 +96,11 @@ const deletePost = async (req: any, res: any) => {
   }
 };
 
-export { getPosts, getUserPosts, addNewPost, getPostByPostId, deletePost };
+export {
+  getPosts,
+  getUserPosts,
+  getPostsPaginated,
+  addNewPost,
+  getPostByPostId,
+  deletePost,
+};
