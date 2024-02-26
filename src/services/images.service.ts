@@ -7,13 +7,14 @@ const fs = require("fs");
 
 const path = require("path");
 
+//Important get rootPath independent if proyect is in develop or production mode
+const rootPath = process.cwd();
+
 const uploadPostImage = async (req: any, res: any) => {
   const userId = req.body.userId;
   const getUser = await userService.getUserById(userId);
   const fileName = getUser[0].image;
-  const filePath = fileName
-    ? path.join(__dirname, "../../uploads", fileName)
-    : null;
+  const filePath = fileName ? path.join(rootPath, "uploads/", fileName) : null;
 
   if (!req.file) {
     return res.status(400).json({ message: "No file uploaded" });
@@ -37,11 +38,8 @@ const uploadUserImage = async (req: any, res: any) => {
   const userId = req.body.userId;
   const getUser = await userService.getUserById(userId);
   const fileName = getUser[0].image;
-  const filePath = fileName
-    ? path.join(__dirname, "../../uploads", fileName)
-    : null;
-  console.log(getUser);
-  console.log(req.file);
+  const filePath = fileName ? path.join(rootPath, "uploads/", fileName) : null;
+
   if (!req.file) {
     return res.status(400).json({ message: "No file uploaded" });
   } else {
@@ -64,7 +62,7 @@ const getUserProfileImage = async (userImage: string) => {
   console.log(userImage);
   // const fileName = req.params.fileName;
   const filePath = userImage
-    ? path.join(__dirname, "../../uploads", userImage)
+    ? path.join(rootPath, "uploads/", userImage)
     : null;
   // Check if the file exists
   if (fs.existsSync(filePath)) {
@@ -81,7 +79,7 @@ const getUserProfileImage = async (userImage: string) => {
 const getPostImage = async (post: Posts) => {
   // const fileName = req.params.fileName;
   const filePath = post.image
-    ? path.join(__dirname, "../../uploads", post.image)
+    ? path.join(rootPath, "uploads/", post.image)
     : null;
   // Check if the file exists
   if (fs.existsSync(filePath)) {

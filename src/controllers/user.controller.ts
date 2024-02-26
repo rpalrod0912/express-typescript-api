@@ -11,6 +11,9 @@ import { getUsernameById } from "../services/user.service";
 const jwt = require("jsonwebtoken");
 const path = require("path");
 
+//Important get rootPath independent if proyect is in develop or production mode
+const rootPath = process.cwd();
+
 //TODO: Get methods that use body params have to be changed to query params in url!!
 
 const getUsers = async (req: any, res: any) => {
@@ -149,7 +152,7 @@ const updateUser = async (req: any, res: any) => {
 const updateProfileImage = async (req: any, res: any) => {
   const id = parseInt(req.params.id);
 
-  const filePath = path.join(__dirname, "../../uploads");
+  const filePath = path.join(rootPath, "uploads/");
 
   if (id && filePath && req.file) {
     const findUser = await userService.getUserById(id);

@@ -4,6 +4,9 @@ import * as likesService from "../services/likes.service";
 
 const path = require("path");
 
+//Important get rootPath independent if proyect is in develop or production mode
+const rootPath = process.cwd();
+
 const getPosts = async (req: any, res: any) => {
   const response = await postsService.getPosts();
   if (response) {
@@ -59,7 +62,7 @@ const getPostByPostId = async (req: any, res: any) => {
 //Make Post With Image
 const addNewPost = async (req: any, res: any) => {
   const { user_id, content } = req.body;
-  const filePath = path.join(__dirname, "../../uploads");
+  const filePath = path.join(rootPath, "uploads/");
   if (user_id && filePath && content && req.file) {
     const findUser = await userService.getUserById(user_id);
     const response =
