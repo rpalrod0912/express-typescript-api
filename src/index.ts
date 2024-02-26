@@ -14,6 +14,8 @@ const cors = require("cors");
 
 const app = express();
 
+const path = require("path");
+
 // Set up the multer middleware
 dotenv.config();
 
@@ -28,9 +30,10 @@ const corOptions = {
 // const upload = multer({ dest: "uploads/" });
 
 const createUploadsFolder = () => {
-  const folderPath = "uploads";
-  if (!fs.existsSync(folderPath)) {
-    fs.mkdirSync(folderPath);
+  const rootPath = process.cwd();
+  const uploadsFolder = path.join(rootPath, "uploads");
+  if (!fs.existsSync(uploadsFolder)) {
+    fs.mkdirSync(uploadsFolder);
   }
 };
 

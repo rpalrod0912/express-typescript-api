@@ -1,17 +1,22 @@
 const { Pool } = require("pg");
 
+// export const pool = new Pool({
+//   host: "localhost",
+//   user: "postgres",
+//   password: "postgres",
+//   database: "nodeapi",
+// });
+
+//production connection to render DATABASE IMPORTANT URL HAVE TO BE COMPLETE OF HOST IF NO IT FAILS
+
 export const pool = new Pool({
-  // host: "localhost",
-  //Production Host:
-  host: "dpg-cnedarol6cac73dj04b0-a",
-  // user: "postgres",
-  //Porduction user
+  host: "dpg-cnedarol6cac73dj04b0-a.frankfurt-postgres.render.com",
+
   user: "postgresnodeapi",
-  // password: "postgres",
-  //Production Password
+  ssl: true,
+
   password: "htcxTey9dIJ3TqrRsJVh5qngyvYGOIws",
-  // database: "nodeapi",
-  //Production database:
+
   database: "nodeapi_tf9r",
   port: "5432",
 });
