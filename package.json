@@ -7,7 +7,8 @@
     "tsc": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node-dev src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && cp src/*.json dist/ && cp .env dist/"
   },
   "keywords": [],
   "author": "",

@@ -20,8 +20,9 @@ const getPosts = async (): Promise<User> => {
     for (let index = 0; index < allPosts.length; index++) {
       const post: Posts = allPosts[index];
       allPosts[index].image = (await getPostImage(post)) ?? "";
-      allPosts[index].user_name = (await getUserById(post.user_id))[0] ?? "";
+      allPosts[index].user_data = (await getUserById(post.user_id))[0] ?? "";
       allPosts[index].comments = (await getCommentsFromPost(post.id)) ?? "";
+      allPosts[index].user_name = allPosts[index].user_data.username;
     }
   }
   return allPosts;
@@ -39,8 +40,9 @@ const getPostsPaginated = async (
     for (let index = 0; index < allPosts.length; index++) {
       const post: Posts = allPosts[index];
       allPosts[index].image = (await getPostImage(post)) ?? "";
-      allPosts[index].user_name = (await getUserById(post.user_id))[0] ?? "";
+      allPosts[index].user_data = (await getUserById(post.user_id))[0] ?? "";
       allPosts[index].comments = (await getCommentsFromPost(post.id)) ?? "";
+      allPosts[index].user_name = allPosts[index].user_data.username;
     }
   }
   return allPosts;
